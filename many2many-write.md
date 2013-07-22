@@ -6,7 +6,7 @@ relation with many `bar` and inversely. When you write to a `many2many` field fo
 record, you're editing a list of IDs.
 
 This list of IDs is manipulated by sending a list of tuples, each containing an action (a number
-between 1 and 6) and the arguments for that action. This is the list of possible actions:
+between 0 and 6) and the arguments for that action. This is the list of possible actions:
 
     (0, 0,  { values }) # Create relation to new record
     (1, ID, { values }) # Update values of existing relation
@@ -16,19 +16,24 @@ between 1 and 6) and the arguments for that action. This is the list of possible
     (5)                 # Remove all links, but keep records
     (6, 0, [IDs])       # Replace all links with the supplied list of IDs
 
-For example, if we have a `foo` and want to create a new `bar` (`bar_ids` being our many2many field)
-and link to it, we'd do:
+For example, if we want to assign a new `res.partner.category` (which we create) to a `res.partner`,
+we'd do:
 
 ```python
-vals = {'name': "Name for our new bar object"}
-foo_obj.write(cr, uid, foo_id, {'bar_ids': [(1, 0, vals)]}, context=context)
+res_partner = self.pool.get('res.partner')
+vals = {'name': "My Category"}
+# Despite its name, category_id really is a many2many, not a many2one.
+res_partner.write(cr, uid, partner_id, {'category_id': [(0, 0, vals)]}, context=context)
 ```
 
-Another example: take all the ids from another `foo` record and have the same relations in another
-`foo` record:
+Another example: take all the categories from another partner and have them applied to a another
+partner:
 
 ```python
-other_foo = foo_obj.browse(cr, uid, other_foo_id, context=context)
-wanted_bar_ids = [bar_id.id for bar_id in other_foo.bar_ids]
-foo_obj.write(cr, uid, foo_id, {'bar_ids': [(6, 0, wanted_bar_ids)]}, context=context)
+res_partner = self.pool.get('res.partner')
+other_partner = res_partner.browse(cr, uid, other_partner_id, context=context)
+# It's numerical IDs we need, not browse_record() wrappers
+wanted_category_ids = [category_id.id for category_id in other_partner.category_id]
+vals = {'category_id': [(6, 0, wanted_category_ids)]}
+res_partner.write(cr, uid, other_partner_id, vals, context=context)
 ```
