@@ -11,4 +11,5 @@ ORM
 Forms
 ---
 * [Show a form in "create" mode with pre-filled values](show-form-create-mode.md)
+* [Override element attributes in inherited forms](form-inherit-override-attributes.md)
 
