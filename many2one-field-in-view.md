@@ -14,14 +14,14 @@ our fax field like this:
 class purchase_order(orm.Model):
     _inherit = 'purchase.order'
     _columns = {
-        'fax': fields.related('partner_id', 'fax', type='char', string='Fax', readonly=True),
+        'partner_fax': fields.related('partner_id', 'fax', type='char', string='Fax', readonly=True),
     }
 ```
 
 What this does is that it "fetches" the `fax` field from the partner that is currently linked to
-the record and then puts it in `purchase.order`. When you inherit `purchase.order`'s form view, you
-can then add this field with a simple:
+the record and then puts it in `purchase.order`'s `partner_fax` field. When you inherit
+`purchase.order`'s form view, you can then add this field with a simple:
 
 ```xml
-<field name="fax"/>
+<field name="partner_fax"/>
 ```
