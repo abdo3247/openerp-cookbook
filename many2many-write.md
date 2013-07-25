@@ -1,8 +1,8 @@
 Write values to a many2many field
 ---
 
-`many2many` fields represent a relation between two models `foo` and `bar` where `foo` can be in
-relation with many `bar` and inversely. When you write to a `many2many` field for a particular
+`many2many` fields represent a relation between two models, for example `res.partner` and `res.partner.category` where `res.partner` can be in
+relation with many `res.partner.category` and inversely. When you write to a `many2many` field for a particular
 record, you're editing a list of IDs.
 
 This list of IDs is manipulated by sending a list of tuples, each containing an action (a number
@@ -26,7 +26,7 @@ vals = {'name': "My Category"}
 res_partner.write(cr, uid, partner_id, {'category_id': [(0, 0, vals)]}, context=context)
 ```
 
-Another example: take all the categories from another partner and have them applied to a another
+Another example: take all the categories from some partner and have them applied to a another
 partner:
 
 ```python
